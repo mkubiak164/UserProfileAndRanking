@@ -2,6 +2,9 @@ package com.capgemini.user.profile.and.ranking.profile;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class ProfileDAO {
 	
 	private List<ProfileEntity> profileEntities;

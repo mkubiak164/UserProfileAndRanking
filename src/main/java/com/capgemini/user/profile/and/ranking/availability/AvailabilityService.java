@@ -1,24 +1,32 @@
 package com.capgemini.user.profile.and.ranking.availability;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.capgemini.user.profile.and.ranking.enums.DayOfTheWeek;
-import com.capgemini.user.profile.and.ranking.enums.Hours;
+import com.capgemini.user.profile.and.ranking.profile.ProfileDTO;
+import com.capgemini.user.profile.and.ranking.profile.ProfileEntity;
+import com.capgemini.user.profile.and.ranking.profile.ProfileMapper;
+import com.capgemini.user.profile.and.ranking.profile.ProfileService;
 
 public class AvailabilityService {
 
 	private AvailabilityMapper availabilityMapper;
 	private AvailabilityDAO availabilityDAO;
-	private AvailabilityDTO availabilityDTO;
-	private String comment;
-	private AvailabilityEntity editedEntity;
-	private AvailabilityEntity entityToRemove;
+	private ProfileService profileService;
+	private ProfileMapper profileMapper;
+
 
 	@Autowired
-	public AvailabilityService(AvailabilityDAO availabilityDAO, AvailabilityMapper availabilityMapper) {
+	public AvailabilityService(AvailabilityDAO availabilityDAO, AvailabilityMapper availabilityMapper,
+			ProfileService profileService, ProfileMapper profileMapper) {
 		this.availabilityDAO = availabilityDAO;
 		this.availabilityMapper = availabilityMapper;
+		this.profileService = profileService;
+		this.profileMapper = profileMapper;
 	}
 
 	public void addAvailability(AvailabilityDTO availabilityDTO) {
@@ -26,42 +34,84 @@ public class AvailabilityService {
 		availabilityDAO.add(userAvailability);
 	}
 
-	public void editAvailability(long id, DayOfTheWeek day, Hours hour) {
+	public void editAvailability(long id, AvailabilityDTO currentAvailability, AvailabilityDTO futureAvailability) {
 
-		List<AvailabilityEntity> userAvailability = availabilityDAO.showAvailability(id);
+		List<AvailabilityEntity> userAvailabilities = availabilityDAO.showAvailability(id);
 
-		for (AvailabilityEntity userEntity : userAvailability) {
-			if (userEntity.getDayOfTheWeek() == day) {
-				if (userEntity.getHours() == hour) {
-					editedEntity = availabilityMapper.edit(userEntity, availabilityDTO);
-				}
+		AvailabilityEntity currentAvailabilityEntity = availabilityMapper.from(currentAvailability);
+			// konwersja z DTO na encję
+		
+		for (AvailabilityEntity currentUserAvailability : userAvailabilities) {
+			if (currentUserAvailability.equals(currentAvailabilityEntity)) {
+				// wygenerowane equals do porównywania wszystkich 2 pól (hour, day)
+				
+				AvailabilityEntity editedEntity = 
+						availabilityMapper.edit(currentUserAvailability, futureAvailability);
+				// po znalezieniu przepisanie wartości z future do encji 
+				
+				availabilityDAO.remove(currentUserAvailability);
+				availabilityDAO.add(editedEntity);
+				// wywalenie starego, dodanie nowego
 			}
 		}
-		availabilityDAO.add(editedEntity);
+		
 	}
 
-	public void suspendAndCommentAvailability(long userID, DayOfTheWeek day, Hours hour) {
+	public void suspendAndCommentAvailability(long userID, AvailabilityDTO availabilityDTO) {
+		
+		List<AvailabilityEntity> userAvailabilities = availabilityDAO.showAvailability(userID);
 
-		availabilityDTO.setSuspended(true);
+		AvailabilityEntity currentAvailabilityEntity = availabilityMapper.from(availabilityDTO);
+			// konwersja z DTO na encję
+		
+		for (AvailabilityEntity currentUserAvailability : userAvailabilities) {
+			if (currentUserAvailability.equals(currentAvailabilityEntity)) {
+				// wygenerowane equals do porównywania wszystkich 2 pól (hour, day)
+				
+				currentUserAvailability.setSuspended(true);
+				currentUserAvailability.setComment(availabilityDTO.getComment());
+			}
+		}
 	}
 
-	public void removeAvailability(long userID, DayOfTheWeek day, Hours hour) {
+	public void removeAvailability(long userID, AvailabilityDTO currentAvailability) {
 
 		List<AvailabilityEntity> userAvailability = availabilityDAO.showAvailability(userID);
+		AvailabilityEntity currentAvailabilityEntity = availabilityMapper.from(currentAvailability);
 		
+		AvailabilityEntity entityToRemove = null;
 		for (AvailabilityEntity userEntity : userAvailability) {
-			if (userEntity.getDayOfTheWeek() == day) {
-				if (userEntity.getHours() == hour) {
-					entityToRemove = availabilityMapper.edit(userEntity, availabilityDTO);
-				}
+			if (userEntity.equals(currentAvailabilityEntity)) {
+				entityToRemove = userEntity;
 			}
 		}
-		availabilityDAO.remove(entityToRemove);
+		if (entityToRemove != null) {
+			availabilityDAO.remove(entityToRemove);
+		}
 	}
 
-	public void showSimilarAvailabilityUsers(long id) {
+	public List<AvailabilityEntity> showAvailability(long id) {
+		return availabilityDAO.showAvailability(id);
+	}
+	
+
+	public List<ProfileEntity> showSimilarAvailabilityUsers(long id) {
 		
+		List<ProfileEntity> allUsers = profileService.findAllUsers();
+		List<ProfileEntity> similarUsers = new ArrayList<>();
 		
+		ProfileDTO myUser = profileService.showProfile(id);
+		List<AvailabilityEntity> myAvailabilities = showAvailability(myUser.getId());
+		
+		for(ProfileEntity userAvailabilities : allUsers){
+			ProfileDTO currentUser = profileService.showProfile(userAvailabilities.getId());
+			List<AvailabilityEntity> currentUserAvailabilities = showAvailability(currentUser.getId());
+			if(!Collections.disjoint(myAvailabilities, currentUserAvailabilities)) {
+				ProfileEntity similarUserProfile = profileMapper.from(currentUser);
+				similarUsers.add(similarUserProfile);
+			}
+		}
+		return similarUsers;
 	}
 
 }

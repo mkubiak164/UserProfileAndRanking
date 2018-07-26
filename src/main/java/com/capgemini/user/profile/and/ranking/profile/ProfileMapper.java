@@ -1,5 +1,8 @@
 package com.capgemini.user.profile.and.ranking.profile;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class ProfileMapper implements ProfileMapperInterface {
 
 	@Override

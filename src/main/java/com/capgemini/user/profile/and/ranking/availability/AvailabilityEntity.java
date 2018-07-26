@@ -9,6 +9,7 @@ public class AvailabilityEntity {
 	private Hours hours;
 	private long userID;
 	private boolean suspended;
+	private String comment;
 	
 
 	public AvailabilityEntity(DayOfTheWeek dayOfTheWeek, Hours hours, boolean suspended) {
@@ -17,13 +18,42 @@ public class AvailabilityEntity {
 		this.suspended = suspended;
 	}
 	
-	public AvailabilityEntity(DayOfTheWeek dayOfTheWeek, Hours hours, long id, boolean suspended) {
+	public AvailabilityEntity(DayOfTheWeek dayOfTheWeek, Hours hours, long id, boolean suspended, String comment) {
 		this.dayOfTheWeek = dayOfTheWeek;
 		this.hours = hours;
 		this.userID = id;
 		this.suspended = suspended;
+		this.comment = comment;
 	}
 	
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((dayOfTheWeek == null) ? 0 : dayOfTheWeek.hashCode());
+		result = prime * result + ((hours == null) ? 0 : hours.hashCode());
+		result = prime * result + (int) (userID ^ (userID >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AvailabilityEntity other = (AvailabilityEntity) obj;
+		if (dayOfTheWeek != other.dayOfTheWeek)
+			return false;
+		if (hours != other.hours)
+			return false;
+		return true;
+	}
+
 	public long getId() {
 		return userID;
 	}
@@ -62,6 +92,14 @@ public class AvailabilityEntity {
 
 	public void setSuspended(boolean suspended) {
 		this.suspended = suspended;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 	
 	

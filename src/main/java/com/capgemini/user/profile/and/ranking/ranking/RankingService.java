@@ -1,30 +1,46 @@
 package com.capgemini.user.profile.and.ranking.ranking;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.capgemini.user.profile.and.ranking.profile.ProfileService;
 
+@Service
 public class RankingService {
 
 	private ProfileService profileService;
-	
+	private RankingDAO rankingDAO;
+	private RankingMapper rankingMapper;
 	
 	@Autowired
-	public RankingService(ProfileService profileService) {
+	public RankingService(ProfileService profileService, RankingDAO rankingDAO, RankingMapper rankingMapper) {
 		this.profileService = profileService;
+		this.rankingDAO = rankingDAO;
+		this.rankingMapper = rankingMapper;
 	}
 
 	public List<RankingDTO> findGameRanking(long gameID) {
 		
-		return null;
+		List<RankingEntity> rankingEntities = rankingDAO.findGameRanking(gameID);
+		List<RankingDTO> rankingDTOs = new ArrayList<>();
+		rankingEntities.stream().forEach(r -> {
+			rankingDTOs.add(rankingMapper.from(r));
+		});
+		return rankingDTOs;
 	}
 
 	public List<RankingDTO> findAllUserGames(long userID) {
 		
-		return null;
+		List<RankingEntity> rankingEntities = rankingDAO.findUserGamesHistory(userID);
+		List<RankingDTO> rankingDTOs = new ArrayList<>();
+		rankingEntities.stream().forEach(r -> {
+			rankingDTOs.add(rankingMapper.from(r));
+		});
+		return rankingDTOs;
 	}
 	
 	public int userRankingPosition(long userID, long gameID) {

@@ -13,7 +13,6 @@ public class StatisticsService {
 
 	private GamesService gameService;
 	private RankingService rankingService;
-	private Level userLevel;
 	
 	@Autowired
 	public StatisticsService(GamesService gameService, RankingService rankingService) {
@@ -40,7 +39,7 @@ public class StatisticsService {
 
 		List<RankingDTO> userGames = rankingService.findAllUserGames(userID);
 		int gamesPlayed = userGames.size();
-		
+		Level userLevel;
 		if(gamesPlayed<10) {
 			userLevel = Level.BEGGINER;
 		} else if(gamesPlayed<30) {

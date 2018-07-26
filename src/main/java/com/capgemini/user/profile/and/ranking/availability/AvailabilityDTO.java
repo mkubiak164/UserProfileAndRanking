@@ -9,16 +9,18 @@ public class AvailabilityDTO {
 	private Hours hours;
 	private long userID;
 	private boolean suspended;
+	private String comment;
 
 	public AvailabilityDTO() {
 		
 	}
 	
-	public AvailabilityDTO(DayOfTheWeek dayOfTheWeek, Hours hours, long userID, boolean suspended) {
+	public AvailabilityDTO(DayOfTheWeek dayOfTheWeek, Hours hours, long userID, boolean suspended, String comment) {
 		this.dayOfTheWeek = dayOfTheWeek;
 		this.hours = hours;
 		this.userID = userID;
 		this.suspended = suspended;
+		this.comment = comment;
 	}
 	
 	public DayOfTheWeek getDayOfTheWeek() {
@@ -52,4 +54,14 @@ public class AvailabilityDTO {
 	public void setSuspended(boolean suspended) {
 		this.suspended = suspended;
 	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	
+	
 }

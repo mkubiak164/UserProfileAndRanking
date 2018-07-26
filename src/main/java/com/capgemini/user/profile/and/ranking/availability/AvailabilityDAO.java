@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
-
 public class AvailabilityDAO {
 
 	private List<AvailabilityEntity> availabilityList = new ArrayList<>();
@@ -25,8 +23,6 @@ public class AvailabilityDAO {
 		availabilityList.remove(availabilityEntity);
 	}
 	
-	
-	
 	public List<AvailabilityEntity> getAvailabilityList() {
 		return availabilityList;
 	}
@@ -34,7 +30,5 @@ public class AvailabilityDAO {
 	public void setAvailabilityList(List<AvailabilityEntity> availabilityList) {
 		this.availabilityList = availabilityList;
 	}
-	
-	
 	
 }

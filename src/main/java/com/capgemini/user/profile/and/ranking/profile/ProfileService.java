@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.capgemini.user.profile.and.ranking.games.GamesDAO;
 import com.capgemini.user.profile.and.ranking.games.GamesEntity;
 import com.capgemini.user.profile.and.ranking.userBoardGame.UserBoardGameDAO;
 import com.capgemini.user.profile.and.ranking.userBoardGame.UserBoardGameEntity;
 
+@Service
 public class ProfileService {
-	
 	
 	private ProfileDAO profileDAO;
 	private ProfileMapper profileMapper;
@@ -65,6 +66,4 @@ public class ProfileService {
 		return allUsers;
 	}
 	
-	
-
 }

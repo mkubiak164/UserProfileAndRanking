@@ -10,8 +10,12 @@ public class RankingDTO {
 	private List<Long> idPlayers;
 	private LocalDateTime dateTime;
 	
-	
-	
+	public RankingDTO(long winnerID, long gameID, List<Long> idPlayers, LocalDateTime dateTime) {
+		this.winnerID = winnerID;
+		this.gameID = gameID;
+		this.idPlayers = idPlayers;
+		this.dateTime = dateTime;
+	}
 	
 	public long getWinnerID() {
 		return winnerID;
