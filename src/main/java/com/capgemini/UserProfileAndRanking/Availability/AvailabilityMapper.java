@@ -8,7 +8,7 @@ public class AvailabilityMapper {
 	
 	public AvailabilityEntity from(AvailabilityDTO availabilityDTO) {
 		return new AvailabilityEntity( availabilityDTO.getDayOfTheWeek(), 
-				availabilityDTO.getHours());  
+				availabilityDTO.getHours(), availabilityDTO.getUserID());  
 	}
 	
 }

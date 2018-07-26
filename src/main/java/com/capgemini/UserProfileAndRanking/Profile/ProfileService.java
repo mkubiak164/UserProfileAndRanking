@@ -35,23 +35,22 @@ public class ProfileService {
 	
 
 	public ProfileDTO showProfile(long id) {
-		ProfileEntity userProfile = profileDAO.giveMieUser(id);
-		if(userProfile != null) {
-			return profileMapper.from(userProfile);
+		ProfileEntity userProfile = profileDAO.giveMeUser(id);
+		if(userProfile == null) {
+			return null;
 		}
-		//  co zwracamy jeżeli index nie istnieje?
-		return null;
+		return profileMapper.from(userProfile);
 	}
 	
 	public void editProfile(long id, ProfileDTO profileDTO) {
-		ProfileEntity profileEntity = profileDAO.giveMieUser(id);
+		ProfileEntity profileEntity = profileDAO.giveMeUser(id);
 		ProfileEntity editedEntity = profileMapper.edit(profileEntity, profileDTO);
 		profileDAO.add(editedEntity);
 	}
 	
 	public List<GamesEntity> showUserGames(long id) {
 		List<GamesEntity> games = new ArrayList<>();
-		ProfileEntity wantedUser = profileDAO.giveMieUser(id);
+		ProfileEntity wantedUser = profileDAO.giveMeUser(id);
 		if(wantedUser != null){
 			List<UserBoardGameEntity> wantedUserGames = userBoardGameDAO.findUserBoardGames(id);
 			for (UserBoardGameEntity userGame : wantedUserGames) {
@@ -62,7 +61,7 @@ public class ProfileService {
 	}
 	
 	public List<ProfileEntity> findAllUsers() {
-		List<ProfileEntity> allUsers = profileDAO.giveMieAllUsers();
+		List<ProfileEntity> allUsers = profileDAO.giveMeAllUsers();
 		return allUsers;
 	}
 	

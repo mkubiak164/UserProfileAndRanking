@@ -7,7 +7,7 @@ public class AvailabilityEntity {
 
 	private DayOfTheWeek dayOfTheWeek;
 	private Hours hours;
-	private long id;
+	private long userID;
 	
 
 	public AvailabilityEntity(DayOfTheWeek dayOfTheWeek, Hours hours) {
@@ -18,20 +18,15 @@ public class AvailabilityEntity {
 	public AvailabilityEntity(DayOfTheWeek dayOfTheWeek, Hours hours, long id) {
 		this.dayOfTheWeek = dayOfTheWeek;
 		this.hours = hours;
-		this.id = id;
+		this.userID = id;
 	}
 	
-	/*public AvailabilityEntity(AvailabilityDTO availabilityDTO) {
-		this.dayOfTheWeek = availabilityDTO.getDayOfTheWeek();
-		this.hours = availabilityDTO.getHours();
-	}*/
-	
 	public long getId() {
-		return id;
+		return userID;
 	}
 
 	public void setId(long id) {
-		this.id = id;
+		this.userID = id;
 	}
 	
 	public DayOfTheWeek getDayOfTheWeek() {

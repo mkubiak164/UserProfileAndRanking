@@ -7,16 +7,16 @@ public class AvailabilityDTO {
 
 	private DayOfTheWeek dayOfTheWeek;
 	private Hours hours;
-	// private long id;
-	
-	
+	private long userID;
+
 	public AvailabilityDTO() {
 		
 	}
 	
-	public AvailabilityDTO(DayOfTheWeek dayOfTheWeek, Hours hours) {
+	public AvailabilityDTO(DayOfTheWeek dayOfTheWeek, Hours hours, long userID) {
 		this.dayOfTheWeek = dayOfTheWeek;
 		this.hours = hours;
+		this.userID = userID;
 	}
 	
 	public DayOfTheWeek getDayOfTheWeek() {
@@ -35,5 +35,11 @@ public class AvailabilityDTO {
 		this.hours = hours;
 	}
 	
-	
+	public long getUserID() {
+		return userID;
+	}
+
+	public void setUserID(long userID) {
+		this.userID = userID;
+	}
 }

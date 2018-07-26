@@ -2,6 +2,7 @@ package com.capgemini.UserProfileAndRanking.Availability;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 
@@ -9,20 +10,18 @@ public class AvailabilityDAO {
 
 	private List<AvailabilityEntity> availabilityList = new ArrayList<>();
 	
-	public AvailabilityEntity showAvailability(long id) {
-		for(AvailabilityEntity userAvailability : availabilityList) {
-			if(userAvailability.getId() == id) {
-				return userAvailability;
-			}
-		}
-		return null;
+	public List<AvailabilityEntity> showAvailability(long id) {
+		
+		return availabilityList.stream()
+				.filter(userAvailability -> userAvailability.getId() == id)
+				.collect(Collectors.toList());
 	}
-	// STREAM 
-	
 	
 	public void add(AvailabilityEntity availabilityEntity) {
-		
+		availabilityList.add(availabilityEntity);
 	}
+	
+	
 	
 	public List<AvailabilityEntity> getAvailabilityList() {
 		return availabilityList;

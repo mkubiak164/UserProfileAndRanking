@@ -14,7 +14,7 @@ public class ProfileDAO {
 		
 	}
 	
-	public ProfileEntity giveMieUser(long id) {
+	public ProfileEntity giveMeUser(long id) {
 		for(ProfileEntity myUser : profileEntities) {
 			if (myUser.getId() == id) {
 				return myUser;
@@ -23,7 +23,7 @@ public class ProfileDAO {
 		return null;
 	}
 	
-	public List<ProfileEntity> giveMieAllUsers() {
+	public List<ProfileEntity> giveMeAllUsers() {
 		return profileEntities;
 	}
 	

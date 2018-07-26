@@ -16,15 +16,18 @@ public class GamesService {
 		return allGames;
 	}
 	
-	public void removeGame() {
-		
+	public void removeGame(long userID, long gameID) {
+		gamesDAO.removeGame(userID, gameID);
 	}
 	
 	public void addGame() {
 		
 	}
 	
-
+	public GamesDTO findGame(long id) {
+		
+		return null;
+	}
 }
 
 
