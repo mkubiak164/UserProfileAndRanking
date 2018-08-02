@@ -1,6 +1,8 @@
 package com.capgemini.user.profile.and.ranking.profile;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
@@ -26,6 +28,37 @@ public class ProfileDAO {
 		return null;
 	}
 	
+	public List<ProfileEntity> findUserByName(String name) {
+		List<ProfileEntity> foundUsers = new ArrayList<>();
+		for(ProfileEntity currentUser : profileEntities) {
+			if (currentUser.getName() == name) {
+				foundUsers.add(currentUser);
+			}
+		}
+		return foundUsers;
+	}
+	
+	public List<ProfileEntity> findUserByLastName(String lastName) {
+		List<ProfileEntity> foundUsers = new ArrayList<>();
+		for(ProfileEntity currentUser : profileEntities) {
+			if (currentUser.getLastName() == lastName) {
+				foundUsers.add(currentUser);
+			}
+		}
+		return foundUsers;
+	}
+	
+	public List<ProfileEntity> findUserByEmail(String email) {
+		List<ProfileEntity> foundUsers = new ArrayList<>();
+		for(ProfileEntity currentUser : profileEntities) {
+			if (currentUser.getEmail() == email) {
+				foundUsers.add(currentUser);
+			}
+		}
+		return foundUsers;
+	}
+	
+	
 	public List<ProfileEntity> giveMeAllUsers() {
 		return profileEntities;
 	}
@@ -36,4 +69,9 @@ public class ProfileDAO {
 		profileEntities.add(profileEntity);
 	}
 
+	public ProfileEntity findUserByEmailAndName(String email, String name) {
+		List<ProfileEntity> foundProfiles = profileEntities.stream().filter(p -> p.getEmail().equals(email) && p.getName().equals(name))
+				.collect(Collectors.toList());
+		return foundProfiles.get(0);
+	}
 }
